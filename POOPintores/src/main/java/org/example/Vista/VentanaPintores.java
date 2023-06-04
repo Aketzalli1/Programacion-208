@@ -42,7 +42,7 @@ public class VentanaPintores extends JFrame {
 
     public VentanaPintores(String title) throws HeadlessException {
         super(title);
-        this.setSize(900, 900);
+        this.setSize(1100, 1100);
         layout = new GridLayout(2, 2);
         this.getContentPane().setLayout(layout);
         // panel1
@@ -84,11 +84,16 @@ public class VentanaPintores extends JFrame {
         // panel2
         panel2 = new JPanel(new FlowLayout());
         panel2.setBackground(new Color(138, 131, 131));
+
         btnCargar = new JButton("Cargar");
         panel2.add(btnCargar);
+
         tblPint = new JTable();
         scrollPane = new JScrollPane(tblPint);
+
         panel2.add(scrollPane);
+
+
 
         // panel3
         panel3 = new JPanel(new FlowLayout());
@@ -410,6 +415,7 @@ public class VentanaPintores extends JFrame {
         txtNombre.setText("");
         txtId.setText("");
         txtNacimiento.setText("");
+        txtLugar.setText("");
     }
 }
 

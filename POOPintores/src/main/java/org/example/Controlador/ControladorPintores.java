@@ -17,7 +17,6 @@ public class ControladorPintores extends MouseAdapter {
 
     public ControladorPintores(VentanaPintores view) {
         this.view = view;
-        this.view = view;
         this.modelo = new ModeloTablaPintores();
         this.pintoresDAO = new PintoresDAO();
         this.view.getTblPint().setModel(modelo);
@@ -37,21 +36,34 @@ public class ControladorPintores extends MouseAdapter {
             this.view.getTblPint().updateUI();
         }
         if (e.getSource() == this.view.getBtnAgregar()) {
-            System.out.println("Se presionó el botón Agregar");
-            Pintores audifono = new Pintores();
-            audifono.setId(0);
-            audifono.setNombre(this.view.getTxtNombre().getText());
-            audifono.setNacimiento(this.view.getTxtNacimiento().getText());
-            audifono.setLugar(this.view.getTxtLugar().getText());
-            audifono.setEstilo(this.view.getTxtEstilo().getText());
-            audifono.setUrl(this.view.getTxtUrl().getText());
-            if (modelo.agregarPintor(audifono)) {
-                JOptionPane.showMessageDialog(view, "Se agregó correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                this.view.getTblPint().updateUI();
-            } else {
-                JOptionPane.showMessageDialog(view, "No se pudo agregar", "Error al Insertar", JOptionPane.ERROR_MESSAGE);
-            }
-            this.view.limpiar();
+            System.out.println("Boton agregar presionado");
+            try {
+                String nombre = camposNulosNombre(this.view.getTxtNombre().getText());
+
+                String nacimiento = camposNulosNacimiento(this.view.getTxtNacimiento().getText());
+                String lugar = camposNulosLugar(this.view.getTxtLugar().getText());
+                String estilo = camposNulosEstilo(this.view.getTxtEstilo().getText());
+                String url = camposNulosUrl(this.view.getTxtUrl().getText());
+
+                Pintores pintores = new Pintores();
+                pintores.setId(0);
+                pintores.setNombre(nombre);
+                pintores.setNacimiento(nacimiento);
+                pintores.setLugar(lugar);
+                pintores.setEstilo(estilo);
+                pintores.setUrl(url);
+
+
+                if (modelo.agregarPintor(pintores)) {
+                    JOptionPane.showMessageDialog(view, "Se agregó correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                    this.view.getTblPint().updateUI();
+                } else {
+                    JOptionPane.showMessageDialog(view, "No se pudo agregar", "Error al Insertar", JOptionPane.ERROR_MESSAGE);
+                }
+                this.view.limpiar();
+            }catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                this.view.limpiar();}
         }
         if (e.getSource() == this.view.getTblPint()) {
             System.out.println("Evento sobre tabla");
@@ -63,10 +75,10 @@ public class ControladorPintores extends MouseAdapter {
                     this.view.getLblImagenPin().setIcon(imagenAudifono);
                 } else {
                     this.view.getLblImagenPin().setIcon(null);
-                    System.out.println("No se pudo obtener la imagen del audífono.");
+                    System.out.println("No se pudo obtener la imagen");
                 }
             } catch (MalformedURLException mfue) {
-                System.out.println("Error al obtener la imagen del audífono: " + mfue.toString());
+                System.out.println("Error no se obtuvo la imagen: " + mfue.toString());
                 this.view.getLblImagenPin().setIcon(null);
             }
             this.view.getTxtNombre1().setText(tmp.getNombre());
@@ -87,12 +99,12 @@ public class ControladorPintores extends MouseAdapter {
             pintores.setUrl(this.view.getTxtUrl1().getText());
             pintores.setId(tmp.getId());
             if (modelo.modificarPintor(pintores)) {
-                JOptionPane.showMessageDialog(view, "Se modificó correctamente", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(view, "Modificacion exitosa", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                 modelo.cargarTablas();
                 this.view.getTblPint().setModel(modelo);
                 this.view.getTblPint().updateUI();
             } else {
-                JOptionPane.showMessageDialog(view, "No se pudo modificar", "Error al Insertar", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, "La modificacion dio error", "Error al Insertar", JOptionPane.ERROR_MESSAGE);
             }
             this.view.getTblPint().updateUI();
         }
@@ -112,4 +124,28 @@ public class ControladorPintores extends MouseAdapter {
         }
         this.view.limpiar();
     }
+    private String camposNulosNombre(String nombre) {
+        if (nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por var llena el campo Nombre correctamente");
+        }return nombre;
+    }
+
+    private String camposNulosLugar(String lugar) {
+        if (lugar.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por var llena el campo Lugar correctamente");
+        }return lugar;
+}   private String camposNulosNacimiento(String nacimiento) {
+        if (nacimiento.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por var llena el campo Nacimiento correctamente");
+        }return nacimiento;
+    }private String camposNulosEstilo(String estilo) {
+        if (estilo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por var llena el campo Estilo correctamente");
+        }return estilo;
+}private String camposNulosUrl(String url) {
+        if (url.trim().isEmpty()) {
+            throw new IllegalArgumentException("Por var llena el campo URL correctamente");
+        }return url;
 }
+    }
+
