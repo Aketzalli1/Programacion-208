@@ -82,7 +82,7 @@ public class PintoresDAO implements InterfazDAO {
 
     @Override
     public Object buscarPorId(String id) throws SQLException {
-        String sql = "SELECT * FROM Audifonos WHERE Id = ?";
+        String sql = "SELECT * FROM pintires WHERE Id = ?";
         Pintores Pintores = null;
 
         PreparedStatement pstm = ConexionSingleton.getInstance("baseDatos.db").getConnection().prepareStatement(sql);
