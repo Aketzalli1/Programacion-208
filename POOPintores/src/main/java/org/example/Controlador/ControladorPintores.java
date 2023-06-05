@@ -38,13 +38,19 @@ public class ControladorPintores extends MouseAdapter {
         if (e.getSource() == this.view.getBtnAgregar()) {
             System.out.println("Boton agregar presionado");
             try {
-                String nombre = camposNulosNombre(this.view.getTxtNombre().getText());
+                //Nuevas variables creadas para validar abajo
+                String nombre = this.view.getTxtNombre().getText();
+                String nacimiento = this.view.getTxtNacimiento().getText();
+                String lugar = this.view.getTxtLugar().getText();
+                String estilo = this.view.getTxtEstilo().getText();
+                String url = this.view.getTxtUrl().getText();
 
-                String nacimiento = camposNulosNacimiento(this.view.getTxtNacimiento().getText());
-                String lugar = camposNulosLugar(this.view.getTxtLugar().getText());
-                String estilo = camposNulosEstilo(this.view.getTxtEstilo().getText());
-                String url = camposNulosUrl(this.view.getTxtUrl().getText());
-
+                //Validacion de que esta vacio
+                if (nombre.isEmpty() || nacimiento.isEmpty() || lugar.isEmpty() || estilo.isEmpty() || url.isEmpty()) {
+                    JOptionPane.showMessageDialog(view, "Por favor, completa todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                //insertar variables para la validacion
                 Pintores pintores = new Pintores();
                 pintores.setId(0);
                 pintores.setNombre(nombre);
@@ -70,9 +76,9 @@ public class ControladorPintores extends MouseAdapter {
             int index = this.view.getTblPint().getSelectedRow();
             Pintores tmp = modelo.getPintoresAtIndex(index);
             try {
-                ImageIcon imagenAudifono = tmp.getImagenPintor();
-                if (imagenAudifono != null) {
-                    this.view.getLblImagenPin().setIcon(imagenAudifono);
+                ImageIcon imagenPintor = tmp.getImagenPintor();
+                if (imagenPintor != null) {
+                    this.view.getLblImagenPin().setIcon(imagenPintor);
                 } else {
                     this.view.getLblImagenPin().setIcon(null);
                     System.out.println("No se pudo obtener la imagen");
@@ -124,28 +130,7 @@ public class ControladorPintores extends MouseAdapter {
         }
         this.view.limpiar();
     }
-    private String camposNulosNombre(String nombre) {
-        if (nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("Por var llena el campo Nombre correctamente");
-        }return nombre;
-    }
 
-    private String camposNulosLugar(String lugar) {
-        if (lugar.trim().isEmpty()) {
-            throw new IllegalArgumentException("Por var llena el campo Lugar correctamente");
-        }return lugar;
-}   private String camposNulosNacimiento(String nacimiento) {
-        if (nacimiento.trim().isEmpty()) {
-            throw new IllegalArgumentException("Por var llena el campo Nacimiento correctamente");
-        }return nacimiento;
-    }private String camposNulosEstilo(String estilo) {
-        if (estilo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Por var llena el campo Estilo correctamente");
-        }return estilo;
-}private String camposNulosUrl(String url) {
-        if (url.trim().isEmpty()) {
-            throw new IllegalArgumentException("Por var llena el campo URL correctamente");
-        }return url;
+
+
 }
-    }
-
